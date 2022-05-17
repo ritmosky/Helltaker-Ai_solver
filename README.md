@@ -9,7 +9,7 @@ Pour ce faire, nous implémenterons différentes méthodes tout en les décrivan
 
 
 
-** PARTIE I : Représentation et modélisation du problème en STRIPS et en Prolog **
+* PARTIE I : Représentation et modélisation du problème en STRIPS et en Prolog *
 
     - Mettre en exergue les principales différences avec Sokoban
     
