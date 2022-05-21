@@ -8,7 +8,7 @@
 
 * Case vide
 * Helltaker
-* Démone
+* Case bute (démone, ange ou porte du diable)
 * Mur
 * Clef
 * Cadenas
@@ -19,9 +19,9 @@
 
 ### Règles du jeu
 
-* __But :__ Helltaker doit atteindre une des cases adjacentes à la case démone.
+* __But :__ Helltaker doit atteindre une des cases horizontales ou verticales à la case bute.
 * Pour chaque niveau/grille, un compteur indique le nombre maximum d'actions réalisables. S'il atteint -1, la partie est perdue.
-* Helltaker peut se déplacer de manière verticale ou horizontale sur une case vide (ou une case clef). Chaque déplacement coûte un point au compteur s'il est possible.
+* Helltaker peut se déplacer de manière verticale ou horizontale sur une case vide (ou une case clef). Chaque déplacement coûte un point au compteur s'il est possible. Il peut aussi se déplacer sur une case contenant un piège à ours
 * Pousser ou se cogner contre un mur ne coûte pas de point.
 * Helltaker peut pousser un rocher ou un squelette de manière verticale ou horizontale s'il se trouve sur une case adjacente. L'objet se déplace si la case suivante est vide. Que l'objet se déplace ou non, l'action coûté un point au compteur.
 * Lorsqu'un objet est pousser vers un mur ou la case démone, alors il ne se déplace pas mais le coût de l'action reste un point du compteur.
@@ -41,5 +41,6 @@ Pour finir, la principale différence entre le Sokoban et Helltaker est que ce d
 * les squelettes, qui ressemblent aux caisses du sokoban et aux rochers de Helltaker mais qui peuvent être détruits
 * les cases cadenas et clefs
 * les pièges à ours, qui peuvent changer d'état
+* le perso reste immobile lorsqu'il pousse un objet (case ou squelette)
 	
 </div>
