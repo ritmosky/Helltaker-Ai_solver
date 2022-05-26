@@ -10,13 +10,15 @@ demon(X,Y) | Non
 rock(X,Y) | **Oui**
 skeleton(X,Y) | **Oui**
 counter(X,Y) | **Oui**
-lock(X,Y) | 
-key(X,Y) | 
+lock(X,Y,S) | **Oui**
+key(X,Y) | Non
+openTrap(X,Y) | Non
 trap(X,Y,S) | **Oui**
 up(X,Y) | Non
 down(X,Y) | Non
 right(X,Y) | Non
 left(X,Y) | Non
+minusOne(X,X') | Non
 
 ## Initialisation
 
@@ -35,4 +37,4 @@ Le but est d'atteindre une case adjacente à la case démone. Nous pouvons le mo
 
 ## Actions
 
-Quinze actions sont à modéliser au total : quatre pour les déplacements de Helltaker, quatre pour pousser les rochers, quatre pour pousser les squelettes, une pour obtenir une clef, une pour ouvrir un cadenas et une autre pour passer sur un piège à ours.
+Quinze actions sont à modéliser au total : quatre pour les déplacements de Helltaker, quatre pour pousser les rochers, quatre pour pousser les squelettes, une pour obtenir une clef, quatre pour ouvrir un cadenas, quatre pour passer sur un piège à ours ouvert et quatre autres pour passer sur un piège à ours fermé.
