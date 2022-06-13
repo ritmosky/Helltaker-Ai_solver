@@ -23,7 +23,7 @@
 * Pour chaque niveau/grille, un compteur indique le nombre maximum d'actions réalisables. S'il atteint -1, la partie est perdue.
 * Helltaker peut se déplacer de manière verticale ou horizontale sur une case vide (ou une case clef). Chaque déplacement coûte un point au compteur s'il est possible. Il peut aussi se déplacer sur une case contenant un piège à ours
 * Pousser ou se cogner contre un mur ne coûte pas de point.
-* Helltaker peut pousser un rocher ou un squelette de manière verticale ou horizontale s'il se trouve sur une case adjacente. L'objet se déplace si la case suivante est vide. Que l'objet se déplace ou non, l'action coûté un point au compteur.
+* Helltaker peut pousser un rocher ou un squelette de manière verticale ou horizontale s'il se trouve sur une case adjacente. L'objet se déplace si la case suivante est vide, s'il s'agit d'une case clef ou s'il s'agit d'une case piège à ours. Que l'objet se déplace ou non, l'action coûté un point au compteur.
 * Lorsqu'un objet est pousser vers un mur ou la case démone, alors il ne se déplace pas mais le coût de l'action reste un point du compteur.
 * Pousser un squelette contre un mur ou contre un rocher détruit le squelette. Les rochers ne peuvent pas être détruits. Le coût pour détruire un squelette est le même que pour pousser le squelette.
 * Les pièges à ours peuvent rester ouverts tout le niveau ou s'ouvrir et se fermer à chaque fois qu'une action est réalisée (c'est-à-dire à chaque fois que le compteur baisse).
@@ -32,6 +32,9 @@
 * Les cadenas ne s'ouvrent que lorsqu'Helltaker est en possession d'une clef et passe sur leur case. Le cadenas disparait alors. Cette action coûte un point.
 * Si Helltaker pousse ou tente de se déplacer sur un cadenas sans avoir récupéré la clef, alors il ne se passe rien mais le compteur perd un point.
 * Ouvrir les cadenas n'est pas obligatoire pour passer un niveau.
+* Il n'y a au maximum qu'un seul cadenas et qu'une seule clef par niveau.
+* La clé ne peut pas être sur une case piège à ours. Le cadenas non plus.
+* Il est possible de pousser les rochers ou les squelettes sur un piège à ours.
 	
 ## Les principales différences avec SOKOBAN
 
