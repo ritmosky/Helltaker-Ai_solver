@@ -24,7 +24,7 @@ step(0..horizon-1).
 cell(0..n-1, 0..m-1).
 
 %les actions
-action(left; right; top; bot; push_right; push_left; push_top; push_bot; nop).
+action(left; right; top; bot; push_right; push_left; push_top; push_bot; push_mob_right; push_mob_left; push_mob_top; push_mob_bot; nop).
 
 %%% l'init
 
@@ -63,6 +63,10 @@ possede_cle :-
 :-  do(left, T),
     fluent(at(X, Y), T),
     fluent(box(X, Y-1), T).
+
+:-  do(left, T),
+    fluent(at(X, Y), T),
+    fluent(mob(X, Y-1), T).
 
 :-  do(left, T),
     fluent(at(X, Y), T),
@@ -120,6 +124,10 @@ removed(at(X, Y), T) :-
 
 :-  do(right, T),
     fluent(at(X, Y), T),
+    fluent(mob(X, Y + 1), T).
+
+:-  do(right, T),
+    fluent(at(X, Y), T),
     not cell(X, Y +1).
 
 :-  do(right, T),
@@ -174,6 +182,10 @@ removed(at(X, Y), T) :-
 
 :-  do(top, T),
     fluent(at(X, Y), T),
+    fluent(mob(X + 1, Y), T).
+
+:-  do(top, T),
+    fluent(at(X, Y), T),
     not cell(X + 1, Y).
 
 :-  do(top, T),
@@ -225,6 +237,10 @@ removed(at(X, Y), T) :-
 :-  do(bot, T),
     fluent(at(X, Y), T),
     fluent(box(X - 1, Y), T).
+
+:-  do(bot, T),
+    fluent(at(X, Y), T),
+    fluent(mob(X - 1, Y), T).
 
 :-  do(bot, T),
     fluent(at(X, Y), T),
@@ -293,9 +309,6 @@ removed(at(X, Y), T) :-
     wall(X, Y + 2).
 
 % effets
-fluent(at(X, Y + 1), T + 1) :-
-    do(push_right, T),
-    fluent(at(X, Y), T).
 
 fluent(box(X, Y + 2), T + 1) :-
     do(push_right, T),
@@ -305,9 +318,6 @@ removed(box(X, Y + 1), T) :-
     do(push_right, T),
     fluent(at(X, Y), T).
 
-removed(at(X, Y), T) :-
-    do(push_right, T),
-    fluent(at(X, Y), T).
 
 %% action push_left
 % préconditions
@@ -328,9 +338,6 @@ removed(at(X, Y), T) :-
     wall(X, Y - 2).
 
 % effets
-fluent(at(X, Y - 1), T + 1) :-
-    do(push_left, T),
-    fluent(at(X, Y), T).
 
 fluent(box(X, Y - 2), T + 1) :-
     do(push_left, T),
@@ -340,9 +347,6 @@ removed(box(X, Y - 1), T) :-
     do(push_left, T),
     fluent(at(X, Y), T).
 
-removed(at(X, Y), T) :-
-    do(push_left, T),
-    fluent(at(X, Y), T).
 
 %% action push_top
 % préconditions
@@ -363,9 +367,6 @@ removed(at(X, Y), T) :-
     wall(X + 2, Y).
 
 % effets
-fluent(at(X + 1, Y), T + 1) :-
-    do(push_top, T),
-    fluent(at(X, Y), T).
 
 fluent(box(X + 2, Y), T + 1) :-
     do(push_top, T),
@@ -375,9 +376,6 @@ removed(box(X + 1, Y), T) :-
     do(push_top, T),
     fluent(at(X, Y), T).
 
-removed(at(X, Y), T) :-
-    do(push_top, T),
-    fluent(at(X, Y), T).
 
 %% action push_bot
 % préconditions
@@ -398,9 +396,6 @@ removed(at(X, Y), T) :-
     wall(X - 2, Y).
 
 % effets
-fluent(at(X - 1, Y), T + 1) :-
-    do(push_bot, T),
-    fluent(at(X, Y), T).
 
 fluent(box(X - 2, Y), T + 1) :-
     do(push_bot, T),
@@ -410,9 +405,130 @@ removed(box(X - 1, Y), T) :-
     do(push_bot, T),
     fluent(at(X, Y), T).
 
-removed(at(X, Y), T) :-
-    do(push_bot, T),
+
+
+%% Push Mob Right
+
+:-  do(push_mob_right, T),
+    fluent(at(X, Y), T),
+    not fluent(mob(X, Y + 1), T).
+
+:-  do(push_mob_right, T),
+    fluent(at(X, Y), T),
+    not cell(X, Y + 2).
+
+% effets
+
+fluent(mob(X, Y + 2), T + 1) :-
+    do(push_mob_right, T),
     fluent(at(X, Y), T).
+
+removed(mob(X, Y + 1), T) :-
+    do(push_mob_right, T),
+    fluent(at(X, Y), T).
+
+removed(mob(X, Y + 2), T) :-
+    do(push_mob_right, T),
+    fluent(box(X,Y+2),T),
+    fluent(at(X, Y), T).
+
+removed(mob(X, Y + 2), T) :-
+    do(push_mob_right, T),
+    wall(X,Y+2),
+    fluent(at(X, Y), T).
+
+
+%% Push Mob Left
+
+:-  do(push_mob_left, T),
+    fluent(at(X, Y), T),
+    not fluent(mob(X, Y - 1), T).
+
+:-  do(push_mob_left, T),
+    fluent(at(X, Y), T),
+    not cell(X, Y - 2).
+
+% effets
+
+fluent(mob(X, Y - 2), T + 1) :-
+    do(push_mob_left, T),
+    fluent(at(X, Y), T).
+
+removed(mob(X, Y - 1), T) :-
+    do(push_mob_left, T),
+    fluent(at(X, Y), T).
+
+removed(mob(X, Y - 2), T) :-
+    do(push_mob_left, T),
+    fluent(box(X,Y-2),T),
+    fluent(at(X, Y), T).
+
+removed(mob(X, Y - 2), T) :-
+    do(push_mob_left, T),
+    wall(X,Y-2),
+    fluent(at(X, Y), T).
+
+%% Push Mob Top
+
+:-  do(push_mob_top, T),
+    fluent(at(X, Y), T),
+    not fluent(mob(X+1, Y), T).
+
+:-  do(push_mob_top, T),
+    fluent(at(X, Y), T),
+    not cell(X+2, Y).
+
+% effets
+
+fluent(mob(X+2, Y), T + 1) :-
+    do(push_mob_top, T),
+    fluent(at(X, Y), T).
+
+removed(mob(X+1, Y), T) :-
+    do(push_mob_top, T),
+    fluent(at(X, Y), T).
+
+removed(mob(X+2, Y), T) :-
+    do(push_mob_top, T),
+    fluent(box(X+2,Y),T),
+    fluent(at(X, Y), T).
+
+removed(mob(X+2, Y), T) :-
+    do(push_mob_top, T),
+    wall(X+2,Y),
+    fluent(at(X, Y), T).
+
+%% Push Mob Bot
+
+:-  do(push_mob_bot, T),
+    fluent(at(X, Y), T),
+    not fluent(mob(X-1, Y), T).
+
+:-  do(push_mob_bot, T),
+    fluent(at(X, Y), T),
+    not cell(X-2, Y).
+
+% effets
+
+fluent(mob(X-2, Y), T + 1) :-
+    do(push_mob_bot, T),
+    fluent(at(X, Y), T).
+
+removed(mob(X-1, Y), T) :-
+    do(push_mob_bot, T),
+    fluent(at(X, Y), T).
+
+removed(mob(X-2, Y), T) :-
+    do(push_mob_bot, T),
+    fluent(box(X-2,Y),T),
+    fluent(at(X, Y), T).
+
+removed(mob(X-2, Y), T) :-
+    do(push_mob_bot, T),
+    wall(X-2,Y),
+    fluent(at(X, Y), T).
+
+
 
 %%% Frame Problem
 % les fluents qui n'ont pas été supprimés restent à leur valeur
