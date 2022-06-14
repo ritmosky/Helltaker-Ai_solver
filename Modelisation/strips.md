@@ -2,19 +2,19 @@
 
 ## Les Prédicats
 
-| Prédicats      | Fluent ? |
-|:---------------|:--------:|
-| wall(X,Y)      |   Non    |
-| helltaker(X,Y) | **Oui**  |
-| demon(X,Y)     |   Non    |
-| rock(X,Y)      | **Oui**  |
-| skeleton(X,Y)  | **Oui**  |
-| counter(X)     | **Oui**  |
-| lock(X,Y,S)    | **Oui**  |
-| key(X,Y)       |   Non    |
-| openTrap(X,Y)  |   Non    |
-| trap(X,Y,S)    | **Oui**  |
-| plusOne(X,X')  |   Non    |
+| Prédicats             | Fluent ? |
+|:----------------------|:--------:|
+| wall(X,Y)             |   Non    |
+| helltaker(X,Y)        | **Oui**  |
+| demon(X,Y)            |   Non    |
+| rock(X,Y)             | **Oui**  |
+| skeleton(X,Y)         | **Oui**  |
+| counter(X)            | **Oui**  |
+| lock(X,Y,S)           | **Oui**  |
+| key(X,Y)              |   Non    |
+| openTrap(X,Y)         |   Non    |
+| trap(X,Y,S)           | **Oui**  |
+| plusOne(X,X')         |   Non    |
 | changeTrapState(X,X') |   Non    |
 
 ## Initialisation
