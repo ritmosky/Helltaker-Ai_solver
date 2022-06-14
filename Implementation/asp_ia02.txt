@@ -1,0 +1,433 @@
+
+% la taille du monde
+#const n = 3.
+#const m = 13.
+#const horizon = 13.
+
+init(at(1, 4)).
+
+demon(1,11).
+init(trap(1,10,-1)).
+
+wall(0, 0..12).
+wall(1, 0).
+wall(1, 12).
+wall(2, 0..12).
+
+init(lock(1,9)).
+key(1,1).
+
+% pour la gestion de l'horizon
+step(0..horizon-1).
+
+% l'environnement : un couloir dans un univers 2D
+cell(0..n-1, 0..m-1).
+
+%les actions
+action(left; right; top; bot; push_right; push_left; push_top; push_bot; nop).
+
+%%% l'init
+
+% Niveau
+
+
+
+fluent(F, 0) :- init(F).
+
+achieved(T) :- demon(X,Y), fluent(at(X+1,Y),T).
+achieved(T) :- demon(X,Y), fluent(at(X-1,Y),T).
+achieved(T) :- demon(X,Y), fluent(at(X,Y+1),T).
+achieved(T) :- demon(X,Y), fluent(at(X,Y-1),T).
+
+:- not achieved(_). % on doit finir
+:- achieved(T), T > horizon. % on doit finir avant l'horizon
+:- achieved(T), do(Act, T), Act != nop. % la seule action possible une fois qu'on a fini : nop
+:- do(nop, T), not achieved(T). % mais on ne peut faire nop qu'une fois qu'on a fini
+
+%%% générateur d'actions..
+{ do(Act, T): action(Act) }=1:- step(T).
+
+
+%%% les actions
+
+fluent(trap(X,Y,B*(-1),T)) :- fluent(trap(X,Y,B),T), do(Act, T).
+
+
+% Effets
+possede_cle :-
+  fluent(at(X,Y),T),
+  key(X,Y).
+
+%%  action left
+% préconditions
+:-  do(left, T),
+    fluent(at(X, Y), T),
+    fluent(box(X, Y-1), T).
+
+:-  do(left, T),
+    fluent(at(X, Y), T),
+    not cell(X, Y-1).
+
+:-  do(left, T),
+    fluent(at(X, Y), T),
+    wall(X, Y-1).
+
+:-  do(left, T),
+    fluent(at(X, Y), T),
+    fluent(lock(X, Y-1),T),
+    not possede_cle.
+
+% effets
+fluent(at(X, Y - 1), T + 1) :-
+    do(left, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X,Y-1),T),
+    not fluent(trap(X,Y-1,_),T).
+
+fluent(at(X, Y - 1), T + 1) :-
+    do(left, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X,Y-1),T),
+    fluent(trap(X,Y-1,-1),T).
+
+fluent(at(X, Y - 1), T + 2) :-
+    do(left, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X,Y-1),T),
+    fluent(trap(X,Y-1,0),T).
+
+fluent(at(X, Y - 1), T + 2) :-
+    do(left, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X,Y-1),T),
+    fluent(trap(X,Y-1,1),T).
+
+fluent(at(X, Y-1), T + 1) :-
+    do(left, T),
+    fluent(at(X, Y), T),
+    fluent(lock(X,Y-1),T),
+    possede_cle.
+
+removed(at(X, Y), T) :-
+    do(left, T),
+    fluent(at(X, Y), T).
+
+%%  action right
+% préconditions
+:-  do(right, T),
+    fluent(at(X, Y), T),
+    fluent(box(X, Y + 1), T).
+
+:-  do(right, T),
+    fluent(at(X, Y), T),
+    not cell(X, Y +1).
+
+:-  do(right, T),
+    fluent(at(X, Y), T),
+    wall(X, Y + 1).
+
+:-  do(right, T),
+    fluent(at(X, Y), T),
+    fluent(lock(X, Y + 1),T),
+    not possede_cle.
+
+% effets
+fluent(at(X, Y + 1), T + 1) :-
+    do(right, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X,Y+1),T),
+    not fluent(trap(X,Y+1,_),T).
+
+fluent(at(X, Y + 1), T + 1) :-
+    do(right, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X,Y+1),T),
+    fluent(trap(X,Y+1,-1),T).
+
+fluent(at(X, Y + 1), T + 2) :-
+    do(right, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X,Y+1),T),
+    fluent(trap(X,Y+1,0),T).
+
+fluent(at(X, Y + 1), T + 2) :-
+    do(right, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X,Y+1),T),
+    fluent(trap(X,Y+1,1),T).
+
+fluent(at(X, Y + 1), T + 1) :-
+    do(right, T),
+    fluent(at(X, Y), T),
+    fluent(lock(X,Y+1),T),
+    possede_cle.
+
+removed(at(X, Y), T) :-
+    do(right, T),
+    fluent(at(X, Y), T).
+
+%%  action top
+% préconditions
+:-  do(top, T),
+    fluent(at(X, Y), T),
+    fluent(box(X + 1, Y), T).
+
+:-  do(top, T),
+    fluent(at(X, Y), T),
+    not cell(X + 1, Y).
+
+:-  do(top, T),
+    fluent(at(X, Y), T),
+    wall(X + 1, Y).
+
+:-  do(top, T),
+    fluent(at(X, Y), T),
+    fluent(lock(X + 1, Y),T),
+    not possede_cle.
+
+% effets
+fluent(at(X+1, Y), T + 1) :-
+    do(top, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X+1,Y),T),
+    not fluent(trap(X+1,Y,_),T).
+
+fluent(at(X+1, Y), T + 1) :-
+    do(top, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X+1,Y),T),
+    fluent(trap(X+1,Y,-1),T).
+
+fluent(at(X+1, Y), T + 2) :-
+    do(top, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X+1,Y),T),
+    fluent(trap(X+1,Y,0),T).
+
+fluent(at(X+1, Y), T + 2) :-
+    do(top, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X+1,Y),T),
+    fluent(trap(X+1,Y,1),T).
+
+fluent(at(X+1, Y), T + 1) :-
+    do(top, T),
+    fluent(at(X, Y), T),
+    fluent(lock(X+1,Y),T),
+    possede_cle.
+
+removed(at(X, Y), T) :-
+    do(top, T),
+    fluent(at(X, Y), T).
+
+%%  action bot
+% préconditions
+:-  do(bot, T),
+    fluent(at(X, Y), T),
+    fluent(box(X - 1, Y), T).
+
+:-  do(bot, T),
+    fluent(at(X, Y), T),
+    not cell(X - 1, Y).
+
+:-  do(bot, T),
+    fluent(at(X, Y), T),
+    wall(X - 1, Y).
+
+:-  do(bot, T),
+    fluent(at(X, Y), T),
+    fluent(lock(X - 1, Y),T),
+    not possede_cle.
+
+% effets
+fluent(at(X-1, Y), T + 1) :-
+    do(bot, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X-1,Y),T),
+    not fluent(trap(X-1,Y,_),T).
+
+fluent(at(X-1, Y), T + 1) :-
+    do(bot, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X-1,Y),T),
+    fluent(trap(X-1,Y,-1),T).
+
+fluent(at(X-1, Y), T + 2) :-
+    do(bot, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X-1,Y),T),
+    fluent(trap(X-1,Y,0),T).
+
+fluent(at(X-1, Y), T + 2) :-
+    do(bot, T),
+    fluent(at(X, Y), T),
+    not fluent(lock(X-1,Y),T),
+    fluent(trap(X-1,Y,1),T).
+
+fluent(at(X-1, Y), T + 1) :-
+    do(bot, T),
+    fluent(at(X, Y), T),
+    fluent(lock(X-1,Y),T),
+    possede_cle.
+
+removed(at(X, Y), T) :-
+    do(bot, T),
+    fluent(at(X, Y), T).
+
+%% action push_right
+% préconditions
+:-  do(push_right, T),
+    fluent(at(X, Y), T),
+    not fluent(box(X, Y + 1), T).
+
+:-  do(push_right, T),
+    fluent(at(X, Y), T),
+    not cell(X, Y + 2).
+
+:-  do(push_right, T),
+    fluent(at(X, Y), T),
+    fluent(box(X, Y + 2), T).
+
+:-  do(push_right, T),
+    fluent(at(X, Y), T),
+    wall(X, Y + 2).
+
+% effets
+fluent(at(X, Y + 1), T + 1) :-
+    do(push_right, T),
+    fluent(at(X, Y), T).
+
+fluent(box(X, Y + 2), T + 1) :-
+    do(push_right, T),
+    fluent(at(X, Y), T).
+
+removed(box(X, Y + 1), T) :-
+    do(push_right, T),
+    fluent(at(X, Y), T).
+
+removed(at(X, Y), T) :-
+    do(push_right, T),
+    fluent(at(X, Y), T).
+
+%% action push_left
+% préconditions
+:-  do(push_left, T),
+    fluent(at(X, Y), T),
+    not fluent(box(X, Y - 1), T).
+
+:-  do(push_left, T),
+    fluent(at(X, Y), T),
+    not cell(X, Y - 2).
+
+:-  do(push_left, T),
+    fluent(at(X, Y), T),
+    fluent(box(X, Y - 2), T).
+
+:-  do(push_left, T),
+    fluent(at(X, Y), T),
+    wall(X, Y - 2).
+
+% effets
+fluent(at(X, Y - 1), T + 1) :-
+    do(push_left, T),
+    fluent(at(X, Y), T).
+
+fluent(box(X, Y - 2), T + 1) :-
+    do(push_left, T),
+    fluent(at(X, Y), T).
+
+removed(box(X, Y - 1), T) :-
+    do(push_left, T),
+    fluent(at(X, Y), T).
+
+removed(at(X, Y), T) :-
+    do(push_left, T),
+    fluent(at(X, Y), T).
+
+%% action push_top
+% préconditions
+:-  do(push_top, T),
+    fluent(at(X, Y), T),
+    not fluent(box(X + 1, Y), T).
+
+:-  do(push_top, T),
+    fluent(at(X, Y), T),
+    not cell(X + 2, Y).
+
+:-  do(push_top, T),
+    fluent(at(X, Y), T),
+    fluent(box(X + 2, Y), T).
+
+:-  do(push_top, T),
+    fluent(at(X, Y), T),
+    wall(X + 2, Y).
+
+% effets
+fluent(at(X + 1, Y), T + 1) :-
+    do(push_top, T),
+    fluent(at(X, Y), T).
+
+fluent(box(X + 2, Y), T + 1) :-
+    do(push_top, T),
+    fluent(at(X, Y), T).
+
+removed(box(X + 1, Y), T) :-
+    do(push_top, T),
+    fluent(at(X, Y), T).
+
+removed(at(X, Y), T) :-
+    do(push_top, T),
+    fluent(at(X, Y), T).
+
+%% action push_bot
+% préconditions
+:-  do(push_bot, T),
+    fluent(at(X, Y), T),
+    not fluent(box(X - 1, Y), T).
+
+:-  do(push_bot, T),
+    fluent(at(X, Y), T),
+    not cell(X - 2, Y).
+
+:-  do(push_bot, T),
+    fluent(at(X, Y), T),
+    fluent(box(X - 2, Y), T).
+
+:-  do(push_bot, T),
+    fluent(at(X, Y), T),
+    wall(X - 2, Y).
+
+% effets
+fluent(at(X - 1, Y), T + 1) :-
+    do(push_bot, T),
+    fluent(at(X, Y), T).
+
+fluent(box(X - 2, Y), T + 1) :-
+    do(push_bot, T),
+    fluent(at(X, Y), T).
+
+removed(box(X - 1, Y), T) :-
+    do(push_bot, T),
+    fluent(at(X, Y), T).
+
+removed(at(X, Y), T) :-
+    do(push_bot, T),
+    fluent(at(X, Y), T).
+
+%%% Frame Problem
+% les fluents qui n'ont pas été supprimés restent à leur valeur
+fluent(F, T + 1) :-
+    fluent(F, T),
+    T + 1 < horizon,
+    not removed(F, T).
+
+% après la fin, plus rien ne bouge
+fluent(F, T + 1) :-
+    fluent(F, T),
+    achieved(T),
+    T + 1 <= horizon.
+
+do(nop, T+1) :- achieved(T), T + 1 <= horizon.
+
+
+#show do/2.
