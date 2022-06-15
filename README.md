@@ -38,6 +38,14 @@ QUELQUES LIENS
 * Description SATPLAN : https://en.wikipedia.org/wiki/Satplan
 
 ## Architecture de notre archive
+Le rapport se trouve à la racine du projet.
+
+Le dossier Modelisation contient deux fichiers markdown : l'un pour la modélisation complète en STRIPS et le second pour un récapitulatif des règles que nous avons déduites du jeu Helltaker.
+
+Le dossier Implementation contient nos programmes pour les deux méthodes implémentées. Vous y trouverez trois sous-dossier : 
+* levels, contient l'ensemble des cartes des niveaux de Helltaker et des cartes de tests
+* ASP, contient l'implémentation en ASP ainsi que les scripts python pour exécuter la méthode
+* Python, contient l'implémentation de la recherche dans un espace d'état
 
 ## Lancement du programme python
 
