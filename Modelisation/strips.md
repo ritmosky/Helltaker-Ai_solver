@@ -45,10 +45,11 @@ Nous nous servirons du niveau 6 de Helltaker comme modèle pour l'initialisation
 
 Le but est d'atteindre une case adjacente à la case démone. Nous pouvons le modéliser comme ceci :
 
-    But(demon(X,Y), plusOne(Y,H), helltaker(X,H))
-    But(demon(X,Y), plusOne(B,Y), helltaker(X,B))
-    But(demon(X,Y), plusOne(X,D), helltaker(D,Y))
-    But(demon(X,Y), plusOne(G,X), helltaker(G,Y))
+    But(
+        demon(X,Y),
+        plusOne(Y,H), plusOne(B,Y), plusOne(X,D), plusOne(G,X),
+        (helltaker(X,H) | helltaker(X,B) | helltaker(D,Y) | helltaker(G,Y))
+    )
     
 ## Actions
 
