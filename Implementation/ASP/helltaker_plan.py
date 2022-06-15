@@ -2,6 +2,7 @@
 import clingo
 import sys
 from helltaker_utils import grid_from_file, check_plan, affichage2#, affichage
+import time
 
 
 def monsuperplanificateur(infos):
@@ -74,13 +75,13 @@ def monsuperplanificateur(infos):
         for m in handle: sol = "Answer: {}".format(m)
         handle.get()
 
-    solution = affichage2(sol, h)    
+    solution = affichage2(sol, h)
     return solution
 
 
 def main():
     
-    
+    start = time.time()
     
     # récupération du nom du fichier depuis la ligne de commande
     filename = sys.argv[1]
@@ -100,6 +101,9 @@ def main():
     else:
         print("[Err]", plan, file=sys.stderr)
         sys.exit(2)
+        
+    endT = time.time()
+    print("Temps de résolution : {} sec".format(endT-start))
         
 
 if __name__ == "__main__":
