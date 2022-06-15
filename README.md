@@ -73,4 +73,5 @@ argument << choice >> de la fonction < search >> pour le mettre à 1.
 ## Lancement du programme ASP
 
 Il suffit d'executer le fichier "helltaker_plan.py" avec comme argument le nom du fichier du niveau souhaité.
+Assurez vous d'avoir clingo dans votre environnement python.
 
