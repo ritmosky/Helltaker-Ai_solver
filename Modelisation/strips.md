@@ -53,8 +53,6 @@ Le but est d'atteindre une case adjacente à la case démone. Nous pouvons le mo
 
 Beaucoup d'actions ont dû être modélisées. En effet, comme il est impossible d'utiliser le "ou" logique en STRIPS, nous avons modélisé des actions similaires dont une précondition change et implique un effet légèrement différent.
 
-Pour le moment, le changement d'état des pièges à ours qui s'ouvrent et se ferment au fil des actions réalisées par le joueur n'a pas été modélisé dans les actions suivantes.
-
 ### Les déplacements simples :
 Tout d'abord, nous modéliserons les actions de déplacement de Helltaker. En effet, le personnage peut se déplacer sur une case vide ou un piège non actif de manière horizontal et vertical. Le compteur sera alors décrémenté d'un point.
 
